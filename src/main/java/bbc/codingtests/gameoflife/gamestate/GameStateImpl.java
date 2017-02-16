@@ -2,31 +2,59 @@ package bbc.codingtests.gameoflife.gamestate;
 
 public class GameStateImpl implements GameState {
 
-    //TODO implement this method such that live cells are represented as a '*' and dead cells are represented by a '.'
-    //TODO use newline ('\n') to separate rows
+    private boolean[][] state;
+
     @Override
     public String toString() {
-        throw new UnsupportedOperationException("Please implement the 'toString' method");
+        String output = "";
+        for (int x = 0; x < this.getRows(); x++) {
+            for (int y = 0; y < this.getCols(); y++) {
+                output += this.isCellAliveAt(x, y) ? '*' : '.';
+            }
+            if (x < this.getCols() -1) {
+                output += '\n';
+            }
+        }
+        return output;
     }
 
-    //TODO implement this constructor to parse an input string and return a new GameStateImpl object representing what you got in the string
-    //TODO as above, live cells are '*' and dead cells are '.' Rows are separated by newline ('\n')
     public GameStateImpl(String input) {
-        throw new UnsupportedOperationException("Please implement the 'GameStateImpl' constructor");
+        int rows = input.split("\n").length;
+        int cols = input.split("\n")[0].length();
+
+        this.state = new boolean[rows][cols];
+
+        int row = 0;
+        int col = 0;
+        for (Character c : input.toCharArray()) {
+            switch (c) {
+                case '.':
+                    this.state[row][col] = false;
+                    col++;
+                    break;
+                case '*':
+                    this.state[row][col] = true;
+                    col++;
+                    break;
+                case '\n':
+                    col = 0;
+                    row++;
+                    break;
+                default:
+                    throw new InvalidGameStateException(c + " is not a valid game character");
+            }
+        }
     }
 
-    //TODO implement this method according to explanation in GameState.java
     public boolean isCellAliveAt(int row, int col) {
-        throw new UnsupportedOperationException("Please implement the 'isCellAliveAt' method");
+        return row >= 0 && row < this.getRows() && col >= 0 && col < this.getCols() && state[row][col];
     }
 
-    @Override
     public int getRows() {
-        throw new UnsupportedOperationException("Please implement the 'getRows' method");
+        return this.state.length;
     }
 
-    @Override
     public int getCols() {
-        throw new UnsupportedOperationException("Please implement the 'getCols' method");
+        return this.state[0].length;
     }
 }
