@@ -18,10 +18,17 @@ public class GameStateTest {
 
     @Test
     public void testRowColCounts() {
-        String input = "...\n***\n..*";
+        String input = "...\n***";
         GameState testState = new GameStateImpl(input);
         assertEquals("The game should have 3 columns", 3, testState.getCols());
-        assertEquals("The game should have 3 rows", 3, testState.getRows());
+        assertEquals("The game should have 3 rows", 2, testState.getRows());
+    }
+
+    @Test
+    public void testJaggedParing() {
+        String input = "*\n.*\n..*\n.*\n*";
+        GameState testState = new GameStateImpl(input);
+        assertEquals("It should make a square game", "*..\n.*.\n..*\n.*.\n*..", testState.toString());
     }
 
     @Test

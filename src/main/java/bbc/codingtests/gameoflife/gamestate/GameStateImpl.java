@@ -1,5 +1,7 @@
 package bbc.codingtests.gameoflife.gamestate;
 
+import java.util.Arrays;
+
 public class GameStateImpl implements GameState {
 
     private boolean[][] state;
@@ -7,11 +9,11 @@ public class GameStateImpl implements GameState {
     @Override
     public String toString() {
         String output = "";
-        for (int x = 0; x < this.getRows(); x++) {
-            for (int y = 0; y < this.getCols(); y++) {
-                output += this.isCellAliveAt(x, y) ? '*' : '.';
+        for (int row = 0; row < this.getRows(); row++) {
+            for (int col = 0; col < this.getCols(); col++) {
+                output += this.isCellAliveAt(row, col) ? '*' : '.';
             }
-            if (x < this.getCols() -1) {
+            if (row < this.getRows() - 1) {
                 output += '\n';
             }
         }
@@ -20,7 +22,7 @@ public class GameStateImpl implements GameState {
 
     public GameStateImpl(String input) {
         int rows = input.split("\n").length;
-        int cols = input.split("\n")[0].length();
+        int cols = Arrays.stream(input.split("\n")).map(String::length).max(Integer::compareTo).orElse(0);
 
         this.state = new boolean[rows][cols];
 
@@ -41,7 +43,7 @@ public class GameStateImpl implements GameState {
                     row++;
                     break;
                 default:
-                    throw new InvalidGameStateException(c + " is not a valid game character");
+                    throw new InvalidGameStateException(String.format("%s is not a valid game character", c));
             }
         }
     }
